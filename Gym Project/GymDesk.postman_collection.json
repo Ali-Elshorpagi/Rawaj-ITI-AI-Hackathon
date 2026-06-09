@@ -1,0 +1,605 @@
+{
+  "info": {
+    "name": "GymDesk API",
+    "description": "Complete Postman collection for GymDesk Gym Management Platform API.\n\nBase URL: {{baseUrl}}\n\nSetup:\n1. Create an environment with variable `baseUrl` = `http://localhost:5000/api/v1`\n2. Run the Login request — the collection auto-saves the access token\n3. All authenticated requests use `{{accessToken}}` automatically",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "gymdesk-api-v1"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api/v1", "type": "string" },
+    { "key": "accessToken", "value": "", "type": "string" },
+    { "key": "memberId", "value": "", "type": "string" },
+    { "key": "planId", "value": "", "type": "string" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Gym@1234\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.accessToken) {",
+                  "  pm.collectionVariables.set('accessToken', res.data.accessToken);",
+                  "  console.log('Access token saved');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"owner@gymdesk.com\",\n  \"password\": \"Gym@1234\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/me"
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/refresh",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"<paste_refresh_token_here>\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/logout"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/forgot-password",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"member@gymdesk.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/change-password",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"Gym@1234\",\n  \"newPassword\": \"NewGym@5678\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Members",
+      "item": [
+        {
+          "name": "List Members",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.length > 0) {",
+                  "  pm.collectionVariables.set('memberId', res.data[0]._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/members?page=1&limit=10",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "status", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Member by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/members/{{memberId}}"
+          }
+        },
+        {
+          "name": "Create Member",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/members",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"email\": \"jane@example.com\",\n  \"phone\": \"+1234567890\",\n  \"gender\": \"female\",\n  \"birthDate\": \"1995-06-15\",\n  \"emergencyContact\": {\n    \"name\": \"John Smith\",\n    \"phone\": \"+1987654321\",\n    \"relationship\": \"Spouse\"\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Member",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/members/{{memberId}}",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+1555000000\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Member Status",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/members/{{memberId}}/status",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"suspended\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Member",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/members/{{memberId}}"
+          }
+        },
+        {
+          "name": "Get Member Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/members/stats"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "List Plans (Public)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.length > 0) {",
+                  "  pm.collectionVariables.set('planId', res.data[0]._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/subscriptions/plans"
+          }
+        },
+        {
+          "name": "Create Plan",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/subscriptions/plans",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Premium Annual\",\n  \"type\": \"annual\",\n  \"price\": 599,\n  \"currency\": \"USD\",\n  \"features\": [\"Unlimited classes\", \"Personal trainer\", \"Locker room\"],\n  \"isPopular\": true,\n  \"color\": \"#5B77BC\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Assign Plan to Member",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/subscriptions/assign",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"{{memberId}}\",\n  \"planId\": \"{{planId}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Attendance",
+      "item": [
+        {
+          "name": "Check In (Manual)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/attendance/check-in",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"{{memberId}}\",\n  \"method\": \"manual\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Check In (QR Code)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/attendance/check-in/qr",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"qrData\": \"GYM-<memberId>-<timestamp>\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Check Out",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/attendance/check-out/{{memberId}}"
+          }
+        },
+        {
+          "name": "Today's Attendance",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/attendance/today"
+          }
+        },
+        {
+          "name": "Member History",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/attendance/member/{{memberId}}?page=1&limit=30",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "30" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Monthly Stats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/attendance/stats/monthly?year=2025&month=6",
+              "query": [
+                { "key": "year", "value": "2025" },
+                { "key": "month", "value": "6" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Stripe Checkout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/payments/checkout",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"{{memberId}}\",\n  \"planId\": \"{{planId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List All Payments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/payments?page=1&limit=20",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "status", "value": "paid", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Revenue Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/payments/revenue-stats"
+          }
+        },
+        {
+          "name": "Refund Payment",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/payments/<paymentId>/refund"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trainers",
+      "item": [
+        {
+          "name": "List Trainers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/trainers"
+          }
+        },
+        {
+          "name": "Create Trainer",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/trainers",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Alex\",\n  \"lastName\": \"Johnson\",\n  \"email\": \"alex.trainer@gymdesk.com\",\n  \"phone\": \"+1234500000\",\n  \"specialization\": [\"CrossFit\", \"Strength Training\"],\n  \"bio\": \"Certified personal trainer with 5 years experience.\",\n  \"experience\": 5,\n  \"certifications\": [\"NASM-CPT\", \"CrossFit L2\"]\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Classes",
+      "item": [
+        {
+          "name": "List Classes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/classes?page=1&limit=20",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Weekly Schedule",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/classes/schedule?startDate=2025-06-01&endDate=2025-06-07",
+              "query": [
+                { "key": "startDate", "value": "2025-06-01" },
+                { "key": "endDate", "value": "2025-06-07" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Class",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/classes",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Morning HIIT\",\n  \"trainer\": \"<trainerId>\",\n  \"startTime\": \"2025-06-10T07:00:00Z\",\n  \"endTime\": \"2025-06-10T08:00:00Z\",\n  \"capacity\": 20,\n  \"dayOfWeek\": \"monday\",\n  \"isRecurring\": true,\n  \"tags\": [\"HIIT\", \"Cardio\", \"Morning\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Enroll Member",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/classes/<classId>/enroll",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"{{memberId}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Owner Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/dashboard/owner"
+          }
+        },
+        {
+          "name": "Manager Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/dashboard/manager"
+          }
+        },
+        {
+          "name": "Member Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/dashboard/member"
+          }
+        },
+        {
+          "name": "Trainer Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/dashboard/trainer"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "List Notifications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/notifications?page=1&limit=20",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "unread", "value": "true", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Unread Count",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/notifications/unread-count"
+          }
+        },
+        {
+          "name": "Mark as Read",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/notifications/<id>/read"
+          }
+        },
+        {
+          "name": "Mark All as Read",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/notifications/read-all"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Attendance Report (JSON)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/reports/attendance?startDate=2025-06-01&endDate=2025-06-30",
+              "query": [
+                { "key": "startDate", "value": "2025-06-01" },
+                { "key": "endDate", "value": "2025-06-30" },
+                { "key": "format", "value": "json" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Attendance Report (Excel)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/reports/attendance?startDate=2025-06-01&endDate=2025-06-30&format=excel",
+              "query": [
+                { "key": "startDate", "value": "2025-06-01" },
+                { "key": "endDate", "value": "2025-06-30" },
+                { "key": "format", "value": "excel" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Revenue Report",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/reports/revenue?year=2025",
+              "query": [
+                { "key": "year", "value": "2025" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Membership Report",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/reports/membership"
+          }
+        },
+        {
+          "name": "Trainer Performance",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/reports/trainer-performance?startDate=2025-06-01&endDate=2025-06-30",
+              "query": [
+                { "key": "startDate", "value": "2025-06-01" },
+                { "key": "endDate", "value": "2025-06-30" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "http://localhost:5000/health"
+          }
+        },
+        {
+          "name": "Swagger UI",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "http://localhost:5000/api-docs"
+          }
+        }
+      ]
+    }
+  ]
+}

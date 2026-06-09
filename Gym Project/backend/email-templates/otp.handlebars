@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        .email-container {
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+        }
+        .header h1 {
+            color: #297f5e;
+        }
+        .message {
+            font-size: 16px;
+            color: #302b2a;
+            line-height: 1.5;
+        }
+        .otp {
+            font-size: 24px;
+            color: #297f5e;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>Email Verification</h1>
+        </div>
+        <p class="message">Hi {{userName}},</p>
+        <p class="message">Thank you for signing up with Patients' Friends Association! Please use the OTP below to verify your email address:</p>
+        <p class="otp">{{contentMsg}}</p> <!-- OTP displayed here -->
+        <p class="message">If you didn't create an account, you can ignore this email.</p>
+        <div class="footer">
+            <p>© 2024 Patients' Friends Association. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
