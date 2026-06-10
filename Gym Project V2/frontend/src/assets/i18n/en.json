@@ -1,0 +1,337 @@
+{
+  "common": {
+    "appName": "GymDesk",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "confirmDelete": "Are you sure you want to delete this item?",
+    "yes": "Yes",
+    "no": "No",
+    "actions": "Actions",
+    "status": "Status",
+    "date": "Date",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "view": "View",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "page": "Page",
+    "of": "of",
+    "rows": "rows",
+    "total": "Total",
+    "active": "Active",
+    "inactive": "Inactive",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "members": "Members",
+    "subscriptions": "Subscriptions",
+    "attendance": "Attendance",
+    "payments": "Payments",
+    "trainers": "Trainers",
+    "classes": "Classes",
+    "reports": "Reports",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout",
+    "subscribe": "Subscribe"
+  },
+  "auth": {
+    "login": "Sign In",
+    "logout": "Sign Out",
+    "register": "Create Account",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password",
+    "changePassword": "Change Password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "rememberMe": "Remember me",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "verifyEmail": "Verify Email",
+    "resendVerification": "Resend verification email",
+    "loginSuccess": "Welcome back!",
+    "logoutSuccess": "Signed out successfully",
+    "registerSuccess": "Account created! Please check your email to verify.",
+    "phone": "Phone number"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalMembers": "Total Members",
+    "activeMembers": "Active Members",
+    "expiredMembers": "Expired Members",
+    "newThisMonth": "New This Month",
+    "todayAttendance": "Today's Check-Ins",
+    "monthlyRevenue": "Monthly Revenue",
+    "revenueGrowth": "Revenue Growth",
+    "expiringMembers": "Expiring Soon",
+    "trainers": "Trainers",
+    "classes": "Classes",
+    "revenueChart": "Monthly Revenue",
+    "attendanceChart": "Weekly Attendance",
+    "vsLastMonth": "vs last month"
+  },
+  "members": {
+    "title": "Members",
+    "addMember": "Add Member",
+    "memberId": "Member ID",
+    "membershipStatus": "Membership Status",
+    "subscription": "Subscription",
+    "expiryDate": "Expiry Date",
+    "joinDate": "Join Date",
+    "attendance": "Attendance",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "status": {
+      "active": "Active",
+      "expired": "Expired",
+      "frozen": "Frozen",
+      "cancelled": "Cancelled",
+      "pending": "Pending"
+    },
+    "qrCode": "QR Code",
+    "emergencyContact": "Emergency Contact",
+    "notes": "Notes",
+    "editMember": "Edit Member",
+    "deleteMember": "Delete Member",
+    "memberDeleted": "Member deleted successfully",
+    "memberCreated": "Member created successfully",
+    "memberUpdated": "Member updated successfully"
+  },
+  "subscriptions": {
+    "title": "Subscription Plans",
+    "planName": "Plan Name",
+    "planType": "Plan Type",
+    "price": "Price",
+    "duration": "Duration",
+    "features": "Features",
+    "popular": "Popular",
+    "addPlan": "Add Plan",
+    "editPlan": "Edit Plan",
+    "deletePlan": "Delete Plan",
+    "assignPlan": "Assign Plan",
+    "renewPlan": "Renew",
+    "types": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "semi-annual": "Semi-Annual",
+      "annual": "Annual"
+    },
+    "days": "days"
+  },
+  "attendance": {
+    "title": "Attendance",
+    "checkIn": "Check In",
+    "checkOut": "Check Out",
+    "qrCheckIn": "QR Check-In",
+    "manualCheckIn": "Manual Check-In",
+    "method": "Method",
+    "checkInTime": "Check-In Time",
+    "checkOutTime": "Check-Out Time",
+    "todayReport": "Today's Report",
+    "noCheckIns": "No check-ins today"
+  },
+  "payments": {
+    "title": "Payments",
+    "invoiceNumber": "Invoice #",
+    "amount": "Amount",
+    "currency": "Currency",
+    "paymentDate": "Payment Date",
+    "status": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "failed": "Failed",
+      "refunded": "Refunded",
+      "partially_refunded": "Partially Refunded"
+    },
+    "refund": "Refund",
+    "processPayment": "Process Payment"
+  },
+  "trainers": {
+    "title": "Trainers",
+    "addTrainer": "Add Trainer",
+    "specialization": "Specialization",
+    "bio": "Bio",
+    "rating": "Rating",
+    "classes": "Classes",
+    "hireDate": "Hire Date"
+  },
+  "classes": {
+    "title": "Classes",
+    "addClass": "Add Class",
+    "schedule": "Schedule",
+    "trainer": "Trainer",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "capacity": "Capacity",
+    "participants": "Participants",
+    "availableSpots": "Available Spots",
+    "location": "Location",
+    "enroll": "Enroll",
+    "unenroll": "Unenroll",
+    "status": {
+      "scheduled": "Scheduled",
+      "ongoing": "Ongoing",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "attendance": "Attendance Report",
+    "revenue": "Revenue Report",
+    "membership": "Membership Report",
+    "trainerPerformance": "Trainer Performance",
+    "exportPdf": "Export PDF",
+    "exportExcel": "Export Excel",
+    "dateRange": "Date Range",
+    "from": "From",
+    "to": "To",
+    "generate": "Generate Report"
+  },
+  "settings": {
+    "title": "Settings",
+    "gymProfile": "Gym Profile",
+    "gymName": "Gym Name",
+    "timezone": "Timezone",
+    "currency": "Currency",
+    "theme": "Theme",
+    "language": "Language",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "english": "English",
+    "arabic": "Arabic"
+  },
+  "landing": {
+    "nav": {
+      "programs": "Programs",
+      "facilities": "Facilities",
+      "pricing": "Pricing",
+      "about": "About",
+      "signIn": "Sign In",
+      "joinNow": "JOIN NOW",
+      "dashboard": "Dashboard"
+    },
+    "hero": {
+      "badge": "Premium Fitness Club",
+      "title1": "Redefine Your",
+      "title2": "Limits",
+      "subtitle": "Experience the next evolution of fitness. Join the elite community pushing boundaries with state-of-the-art tech and world-class coaching.",
+      "cta1": "START FREE TRIAL",
+      "cta2": "VIEW FACILITIES",
+      "scroll": "Scroll"
+    },
+    "stats": {
+      "members": "Active Members",
+      "trainers": "Pro Trainers",
+      "access": "Club Access",
+      "locations": "Locations"
+    },
+    "programs": {
+      "badge": "Elite Programs",
+      "title": "Tailored Performance For Every Goal",
+      "viewAll": "View All Programs",
+      "learnMore": "LEARN MORE",
+      "strength": {
+        "name": "Strength",
+        "desc": "Master the art of heavy lifting with Olympic bars, power racks, and specialized strength cycles."
+      },
+      "hiit": {
+        "name": "HIIT",
+        "desc": "High-intensity intervals designed to torch calories and maximize cardiovascular endurance."
+      },
+      "yoga": {
+        "name": "Yoga",
+        "desc": "Find your balance and core stability through guided flow sessions in our zen-inspired studio."
+      },
+      "pt": {
+        "name": "Personal Training",
+        "desc": "1-on-1 expert coaching tailored to your physiology, nutrition, and lifestyle goals."
+      },
+      "boxing": {
+        "name": "Boxing",
+        "desc": "Unlock power and precision with our professional boxing and combat conditioning programs."
+      },
+      "cardio": {
+        "name": "Cardio",
+        "desc": "Boost endurance and burn fat with our high-energy cardio programs and state-of-the-art machines."
+      }
+    },
+    "classes": {
+      "badge": "Live Schedule",
+      "title": "Book Your Next Class",
+      "subtitle": "Browse upcoming classes and reserve your spot today. Expert trainers, proven results.",
+      "enroll": "Enroll Now",
+      "spots": "spots left",
+      "full": "Full",
+      "viewAll": "View Full Schedule",
+      "trainer": "Trainer",
+      "noClasses": "No upcoming classes available"
+    },
+    "facilities": {
+      "badge": "The Club",
+      "title": "State-of-the-Art Facilities",
+      "subtitle": "Over 20,000 sq ft of premium fitness equipment, recovery zones, and luxury amenities designed for the elite.",
+      "floor": "Training Floor",
+      "floorDesc": "Olympic-grade equipment & power racks",
+      "recovery": "Recovery Suite",
+      "recoveryDesc": "Sauna, Cryotherapy & Massage",
+      "cardio": "Cardio Deck",
+      "cardioDesc": "Interactive tech-integrated performance tracking"
+    },
+    "pricing": {
+      "badge": "Membership",
+      "title": "Simple, Transparent Pricing",
+      "subtitle": "No contracts. No hidden fees. Cancel anytime.",
+      "month": "month",
+      "days": "days",
+      "popular": "MOST POPULAR",
+      "getStarted": "Get Started",
+      "contact": "Contact Us",
+      "noPlans": "Contact us for pricing information",
+      "perMonth": "/mo"
+    },
+    "cta": {
+      "title1": "Ready to Join",
+      "title2": "The Elite?",
+      "subtitle": "No contracts. No hidden fees. Just pure results and an incredible community. Start your 3-day guest pass today.",
+      "button": "GET STARTED NOW",
+      "social": "Join 5,000+ this month"
+    },
+    "footer": {
+      "about": "The all-in-one gym management platform for elite fitness clubs.",
+      "platform": "Platform",
+      "account": "Account",
+      "contact": "Contact",
+      "signIn": "Sign In",
+      "register": "Register",
+      "resetPwd": "Reset Password",
+      "rights": "All rights reserved.",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    }
+  }
+}

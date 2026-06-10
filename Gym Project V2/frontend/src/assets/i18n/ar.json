@@ -1,0 +1,337 @@
+{
+  "common": {
+    "appName": "جيم ديسك",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "search": "بحث",
+    "filter": "تصفية",
+    "export": "تصدير",
+    "loading": "جاري التحميل...",
+    "noData": "لا توجد بيانات",
+    "confirmDelete": "هل أنت متأكد من حذف هذا العنصر؟",
+    "yes": "نعم",
+    "no": "لا",
+    "actions": "إجراءات",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "view": "عرض",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "page": "صفحة",
+    "of": "من",
+    "rows": "صفوف",
+    "total": "الإجمالي",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "enabled": "ممكّن",
+    "disabled": "معطّل",
+    "success": "نجاح",
+    "error": "خطأ",
+    "warning": "تحذير"
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "members": "الأعضاء",
+    "subscriptions": "الاشتراكات",
+    "attendance": "الحضور",
+    "payments": "المدفوعات",
+    "trainers": "المدربون",
+    "classes": "الصفوف",
+    "reports": "التقارير",
+    "notifications": "الإشعارات",
+    "settings": "الإعدادات",
+    "profile": "الملف الشخصي",
+    "logout": "تسجيل الخروج",
+    "subscribe": "اشتراك"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "register": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "changePassword": "تغيير كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "rememberMe": "تذكرني",
+    "noAccount": "ليس لديك حساب؟",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "verifyEmail": "التحقق من البريد الإلكتروني",
+    "resendVerification": "إعادة إرسال رسالة التحقق",
+    "loginSuccess": "مرحباً بعودتك!",
+    "logoutSuccess": "تم تسجيل الخروج بنجاح",
+    "registerSuccess": "تم إنشاء الحساب! يرجى التحقق من بريدك الإلكتروني.",
+    "phone": "رقم الهاتف"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "totalMembers": "إجمالي الأعضاء",
+    "activeMembers": "الأعضاء النشطون",
+    "expiredMembers": "الاشتراكات المنتهية",
+    "newThisMonth": "جدد هذا الشهر",
+    "todayAttendance": "حضور اليوم",
+    "monthlyRevenue": "الإيرادات الشهرية",
+    "revenueGrowth": "نمو الإيرادات",
+    "expiringMembers": "تنتهي قريباً",
+    "trainers": "المدربون",
+    "classes": "الصفوف",
+    "revenueChart": "الإيرادات الشهرية",
+    "attendanceChart": "الحضور الأسبوعي",
+    "vsLastMonth": "مقارنة بالشهر الماضي"
+  },
+  "members": {
+    "title": "الأعضاء",
+    "addMember": "إضافة عضو",
+    "memberId": "رقم العضو",
+    "membershipStatus": "حالة العضوية",
+    "subscription": "الاشتراك",
+    "expiryDate": "تاريخ الانتهاء",
+    "joinDate": "تاريخ الانضمام",
+    "attendance": "الحضور",
+    "gender": "الجنس",
+    "male": "ذكر",
+    "female": "أنثى",
+    "other": "أخرى",
+    "status": {
+      "active": "نشط",
+      "expired": "منتهي",
+      "frozen": "مجمّد",
+      "cancelled": "ملغى",
+      "pending": "معلق"
+    },
+    "qrCode": "رمز QR",
+    "emergencyContact": "جهة اتصال الطوارئ",
+    "notes": "ملاحظات",
+    "editMember": "تعديل العضو",
+    "deleteMember": "حذف العضو",
+    "memberDeleted": "تم حذف العضو بنجاح",
+    "memberCreated": "تم إنشاء العضو بنجاح",
+    "memberUpdated": "تم تحديث العضو بنجاح"
+  },
+  "subscriptions": {
+    "title": "خطط الاشتراك",
+    "planName": "اسم الخطة",
+    "planType": "نوع الخطة",
+    "price": "السعر",
+    "duration": "المدة",
+    "features": "المميزات",
+    "popular": "الأكثر شعبية",
+    "addPlan": "إضافة خطة",
+    "editPlan": "تعديل الخطة",
+    "deletePlan": "حذف الخطة",
+    "assignPlan": "تعيين خطة",
+    "renewPlan": "تجديد",
+    "types": {
+      "monthly": "شهري",
+      "quarterly": "ربع سنوي",
+      "semi-annual": "نصف سنوي",
+      "annual": "سنوي"
+    },
+    "days": "يوم"
+  },
+  "attendance": {
+    "title": "الحضور",
+    "checkIn": "تسجيل الدخول",
+    "checkOut": "تسجيل الخروج",
+    "qrCheckIn": "دخول بـ QR",
+    "manualCheckIn": "دخول يدوي",
+    "method": "الطريقة",
+    "checkInTime": "وقت الدخول",
+    "checkOutTime": "وقت الخروج",
+    "todayReport": "تقرير اليوم",
+    "noCheckIns": "لا يوجد حضور اليوم"
+  },
+  "payments": {
+    "title": "المدفوعات",
+    "invoiceNumber": "رقم الفاتورة",
+    "amount": "المبلغ",
+    "currency": "العملة",
+    "paymentDate": "تاريخ الدفع",
+    "status": {
+      "pending": "معلق",
+      "paid": "مدفوع",
+      "failed": "فشل",
+      "refunded": "مسترد",
+      "partially_refunded": "مسترد جزئياً"
+    },
+    "refund": "استرداد",
+    "processPayment": "معالجة الدفع"
+  },
+  "trainers": {
+    "title": "المدربون",
+    "addTrainer": "إضافة مدرب",
+    "specialization": "التخصص",
+    "bio": "السيرة الذاتية",
+    "rating": "التقييم",
+    "classes": "الصفوف",
+    "hireDate": "تاريخ التوظيف"
+  },
+  "classes": {
+    "title": "الصفوف",
+    "addClass": "إضافة صف",
+    "schedule": "الجدول",
+    "trainer": "المدرب",
+    "startTime": "وقت البداية",
+    "endTime": "وقت النهاية",
+    "capacity": "السعة",
+    "participants": "المشاركون",
+    "availableSpots": "الأماكن المتاحة",
+    "location": "الموقع",
+    "enroll": "تسجيل",
+    "unenroll": "إلغاء التسجيل",
+    "status": {
+      "scheduled": "مجدول",
+      "ongoing": "جارٍ",
+      "completed": "مكتمل",
+      "cancelled": "ملغى"
+    }
+  },
+  "reports": {
+    "title": "التقارير",
+    "attendance": "تقرير الحضور",
+    "revenue": "تقرير الإيرادات",
+    "membership": "تقرير العضوية",
+    "trainerPerformance": "أداء المدربين",
+    "exportPdf": "تصدير PDF",
+    "exportExcel": "تصدير Excel",
+    "dateRange": "نطاق التاريخ",
+    "from": "من",
+    "to": "إلى",
+    "generate": "توليد التقرير"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "gymProfile": "ملف الصالة",
+    "gymName": "اسم الصالة",
+    "timezone": "المنطقة الزمنية",
+    "currency": "العملة",
+    "theme": "المظهر",
+    "language": "اللغة",
+    "lightMode": "الوضع الفاتح",
+    "darkMode": "الوضع الداكن",
+    "english": "الإنجليزية",
+    "arabic": "العربية"
+  },
+  "landing": {
+    "nav": {
+      "programs": "البرامج",
+      "facilities": "المرافق",
+      "pricing": "الأسعار",
+      "about": "عنا",
+      "signIn": "تسجيل الدخول",
+      "joinNow": "انضم الآن",
+      "dashboard": "لوحة التحكم"
+    },
+    "hero": {
+      "badge": "نادي لياقة بدنية متميز",
+      "title1": "تجاوز",
+      "title2": "حدودك",
+      "subtitle": "اختبر التطور التالي في اللياقة البدنية. انضم إلى مجتمع النخبة الذي يتخطى الحدود بأحدث التقنيات وتدريب عالمي المستوى.",
+      "cta1": "ابدأ تجربتك المجانية",
+      "cta2": "استعرض المرافق",
+      "scroll": "تمرير"
+    },
+    "stats": {
+      "members": "عضو نشط",
+      "trainers": "مدرب محترف",
+      "access": "وصول مستمر",
+      "locations": "فرع"
+    },
+    "programs": {
+      "badge": "برامج متميزة",
+      "title": "أداء مصمم خصيصاً لكل هدف",
+      "viewAll": "عرض جميع البرامج",
+      "learnMore": "اعرف المزيد",
+      "strength": {
+        "name": "القوة",
+        "desc": "أتقن فن رفع الأثقال مع القضبان الأولمبية وحوامل الطاقة ودورات القوة المتخصصة."
+      },
+      "hiit": {
+        "name": "HIIT",
+        "desc": "فترات عالية الكثافة مصممة لحرق السعرات الحرارية وزيادة التحمل القلبي الوعائي."
+      },
+      "yoga": {
+        "name": "اليوغا",
+        "desc": "اعثر على توازنك وثبات جوهرك من خلال جلسات التدفق الموجهة في استوديو مستوحى من الزن."
+      },
+      "pt": {
+        "name": "تدريب شخصي",
+        "desc": "تدريب فردي متخصص مصمم وفق تركيبتك الجسدية وتغذيتك وأهداف نمط حياتك."
+      },
+      "boxing": {
+        "name": "الملاكمة",
+        "desc": "اكتشف القوة والدقة مع برامج الملاكمة المحترفة وتكييف القتال."
+      },
+      "cardio": {
+        "name": "الكارديو",
+        "desc": "عزز تحملك وأحرق الدهون مع برامج الكارديو عالية الطاقة وأجهزتنا المتطورة."
+      }
+    },
+    "classes": {
+      "badge": "الجدول الحي",
+      "title": "احجز صفك القادم",
+      "subtitle": "تصفح الصفوف القادمة واحجز مكانك اليوم. مدربون متخصصون، نتائج مثبتة.",
+      "enroll": "سجل الآن",
+      "spots": "أماكن متاحة",
+      "full": "مكتمل",
+      "viewAll": "عرض الجدول الكامل",
+      "trainer": "المدرب",
+      "noClasses": "لا توجد صفوف قادمة متاحة"
+    },
+    "facilities": {
+      "badge": "النادي",
+      "title": "مرافق بأحدث التقنيات",
+      "subtitle": "أكثر من 20,000 قدم مربع من معدات اللياقة البدنية الفاخرة ومناطق الاسترداد والمرافق الراقية المصممة للنخبة.",
+      "floor": "قاعة التدريب",
+      "floorDesc": "معدات بمستوى أولمبي وحوامل طاقة",
+      "recovery": "جناح الاسترداد",
+      "recoveryDesc": "ساونا، علاج بالتبريد، ومساج",
+      "cardio": "منصة الكارديو",
+      "cardioDesc": "تتبع أداء متكامل بالتقنية التفاعلية"
+    },
+    "pricing": {
+      "badge": "العضوية",
+      "title": "أسعار شفافة وبسيطة",
+      "subtitle": "لا عقود. لا رسوم خفية. إلغاء في أي وقت.",
+      "month": "شهر",
+      "days": "يوم",
+      "popular": "الأكثر شعبية",
+      "getStarted": "ابدأ الآن",
+      "contact": "تواصل معنا",
+      "noPlans": "تواصل معنا للاستفسار عن الأسعار",
+      "perMonth": "/شهر"
+    },
+    "cta": {
+      "title1": "مستعد للانضمام",
+      "title2": "إلى النخبة؟",
+      "subtitle": "لا عقود. لا رسوم خفية. فقط نتائج حقيقية ومجتمع رائع. ابدأ تصريح ضيف 3 أيام اليوم.",
+      "button": "ابدأ الآن",
+      "social": "انضم إلى أكثر من 5000 هذا الشهر"
+    },
+    "footer": {
+      "about": "المنصة الشاملة لإدارة الأندية الرياضية المتميزة.",
+      "platform": "المنصة",
+      "account": "الحساب",
+      "contact": "التواصل",
+      "signIn": "تسجيل الدخول",
+      "register": "التسجيل",
+      "resetPwd": "إعادة تعيين كلمة المرور",
+      "rights": "جميع الحقوق محفوظة.",
+      "privacy": "الخصوصية",
+      "terms": "الشروط"
+    }
+  }
+}
