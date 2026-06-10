@@ -36,23 +36,23 @@ import { ToastrService } from 'ngx-toastr';
             <div class="gd-card"><div class="gd-skeleton" style="height:200px"></div></div>
           }
         } @else {
-          @for (cls of classes(); track cls.id) {
+          @for (cls of classes(); track cls.id ?? cls._id) {
             <div class="class-card gd-card">
               <div class="class-card__header">
-                <h3 class="class-card__title">{{ cls.title }}</h3>
+                <h3 class="class-card__title">{{ cls.name }}</h3>
                 <span class="badge" [ngClass]="getStatusClass(cls)">
                   {{ 'classes.status.' + cls.status | translate }}
                 </span>
               </div>
               <div class="class-card__trainer">
                 <div class="gd-avatar gd-avatar--sm">
-                  {{ getTrainerInitials(cls.trainer) }}
+                  {{ getTrainerInitials(cls.trainerId) }}
                 </div>
-                <span>{{ cls.trainer?.firstName }} {{ cls.trainer?.lastName }}</span>
+                <span>{{ trainerName(cls.trainerId) }}</span>
               </div>
               <div class="class-card__time">
                 <i class="fa-solid fa-clock"></i>
-                {{ cls.startTime | date:'EEE, MMM d' }} · {{ cls.startTime | date:'shortTime' }} – {{ cls.endTime | date:'shortTime' }}
+                {{ scheduleLabel(cls) }}
               </div>
               @if (cls.location) {
                 <div class="class-card__location">
@@ -61,9 +61,9 @@ import { ToastrService } from 'ngx-toastr';
               }
               <div class="class-card__capacity">
                 <div class="capacity-bar">
-                  <div class="capacity-fill" [style.width.%]="((cls.participants?.length ?? 0) / cls.capacity) * 100"></div>
+                  <div class="capacity-fill" [style.width.%]="((cls.enrollmentCount ?? cls.participants?.length ?? 0) / cls.capacity) * 100"></div>
                 </div>
-                <span>{{ cls.participants?.length ?? 0 }}/{{ cls.capacity }} participants</span>
+                <span>{{ cls.enrollmentCount ?? cls.participants?.length ?? 0 }}/{{ cls.capacity }} participants</span>
               </div>
               <div class="class-card__tags">
                 @for (tag of (cls.tags ?? []).slice(0,3); track tag) {
@@ -147,9 +147,30 @@ export class ClassListComponent implements OnInit {
     return `badge--${map[cls.status ?? 'scheduled'] ?? 'pending'}`;
   }
 
-  getTrainerInitials(trainer: any): string {
-    if (!trainer) return '?';
-    return `${trainer.firstName?.[0]}${trainer.lastName?.[0]}`.toUpperCase();
+  getTrainerInitials(trainer: GymClass['trainerId']): string {
+    if (!trainer || typeof trainer === 'string') return '?';
+    return this.trainerName(trainer)
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
+  }
+
+  trainerName(trainer: GymClass['trainerId']): string {
+    if (!trainer || typeof trainer === 'string') return 'Trainer TBD';
+    return trainer.fullName ?? ([trainer.firstName, trainer.lastName].filter(Boolean).join(' ') || 'Trainer TBD');
+  }
+
+  scheduleLabel(cls: GymClass): string {
+    if (!cls.schedule?.length) return 'No schedule set';
+    return cls.schedule
+      .map(slot => `${this.dayName(slot.dayOfWeek)} ${slot.startTime}-${slot.endTime}`)
+      .join(', ');
+  }
+
+  dayName(day: number): string {
+    return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][day] ?? '';
   }
 
   openAddDialog(): void {
@@ -164,7 +185,7 @@ export class ClassListComponent implements OnInit {
       next: () => {
         this.enrollingId.set(null);
         this.enrolledIds.update(s => new Set([...s, id]));
-        this.toastr.success(`You joined ${cls.name ?? cls.title}!`, 'Enrolled');
+        this.toastr.success(`You joined ${cls.name}!`, 'Enrolled');
       },
       error: (err) => {
         this.enrollingId.set(null);
@@ -183,3 +204,4 @@ export class ClassListComponent implements OnInit {
     });
   }
 }
+

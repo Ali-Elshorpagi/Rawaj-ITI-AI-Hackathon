@@ -18,6 +18,10 @@ export class AttendanceService extends ApiService {
     return this.patch<ApiResponse<Attendance>>(`/attendance/${id}/check-out`, {});
   }
 
+  staffCheckOut(id: string): Observable<ApiResponse<Attendance>> {
+    return this.patch<ApiResponse<Attendance>>(`/attendance/${id}/checkout`, {});
+  }
+
   getTodayReport(): Observable<ApiResponse<{ date: Date; total: number; records: Attendance[] }>> {
     return this.get<ApiResponse<any>>('/attendance/today');
   }

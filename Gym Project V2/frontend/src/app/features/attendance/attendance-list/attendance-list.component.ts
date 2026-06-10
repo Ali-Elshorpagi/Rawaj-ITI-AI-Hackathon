@@ -39,17 +39,17 @@ import { AttendanceService } from '../../../services/attendance.service';
               </tr>
             </thead>
             <tbody>
-              @for (record of records(); track record.id) {
+              @for (record of records(); track record.id ?? record._id) {
                 <tr>
                   <td>
                     <div style="display:flex;align-items:center;gap:10px">
-                      <div class="gd-avatar gd-avatar--sm">{{ getInitials(record.member) }}</div>
-                      {{ record.member?.firstName }} {{ record.member?.lastName }}
+                      <div class="gd-avatar gd-avatar--sm">{{ getInitials(record.memberId) }}</div>
+                      {{ memberName(record.memberId) }}
                     </div>
                   </td>
-                  <td><code>{{ record.member?.memberId }}</code></td>
-                  <td>{{ record.checkInTime | date:'shortTime' }}</td>
-                  <td>{{ record.checkOutTime ? (record.checkOutTime | date:'shortTime') : '—' }}</td>
+                  <td><code>{{ memberIdentifier(record.memberId) }}</code></td>
+                  <td>{{ record.checkedInAt | date:'shortTime' }}</td>
+                  <td>{{ record.checkedOutAt ? (record.checkedOutAt | date:'shortTime') : '-' }}</td>
                   <td><span class="badge badge--active">{{ record.method }}</span></td>
                 </tr>
               } @empty {
@@ -91,6 +91,18 @@ export class AttendanceListComponent implements OnInit {
 
   getInitials(member: any): string {
     if (!member) return '?';
-    return `${member.firstName?.[0]}${member.lastName?.[0]}`.toUpperCase();
+    const name = this.memberName(member);
+    return name.split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase();
+  }
+
+  memberName(member: any): string {
+    if (!member || typeof member === 'string') return 'Member';
+    return member.fullName ?? ([member.firstName, member.lastName].filter(Boolean).join(' ') || 'Member');
+  }
+
+  memberIdentifier(member: any): string {
+    if (!member || typeof member === 'string') return member ?? '-';
+    return member.memberId ?? member._id ?? member.id ?? '-';
   }
 }
+

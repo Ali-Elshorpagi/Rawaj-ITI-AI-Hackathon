@@ -112,7 +112,7 @@ import { ModalService } from '../../../shared/modal/modal.service';
                         </div>
                       </div>
                     </td>
-                    <td><code>{{ member.memberId }}</code></td>
+                    <td><code style="font-size:.7rem;word-break:break-all">{{ member.id }}</code></td>
                     <td>{{ member.subscriptionPlan?.name ?? '—' }}</td>
                     <td>
                       <span class="badge" [ngClass]="'badge--' + member.membershipStatus">
@@ -252,10 +252,12 @@ export class MemberListComponent implements OnInit {
     return new Date(date) < new Date();
   }
 
-  openQR(member: Member): void {
+  async openQR(member: Member): Promise<void> {
     if (member.qrCode) {
+      const QRCode = (await import('qrcode')).default;
+      const qrImage = await QRCode.toDataURL(member.qrCode, { width: 260, margin: 1 });
       const win = window.open('', '_blank');
-      win?.document.write(`<img src="${member.qrCode}" style="max-width:300px"><p>${member.memberId}</p>`);
+      win?.document.write(`<img src="${qrImage}" style="max-width:300px"><p>${member.fullName}</p><code>${member.qrCode}</code>`);
     }
   }
 

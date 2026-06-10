@@ -191,9 +191,10 @@ export class MemberFormComponent implements OnInit {
       this.membersService.getById(this.memberId).subscribe({
         next: (res) => {
           const m = res.data;
+          const [firstName, ...lastNameParts] = (m.fullName ?? '').split(' ');
           this.form.patchValue({
-            firstName: m.firstName,
-            lastName: m.lastName,
+            firstName: m.firstName ?? firstName,
+            lastName: m.lastName ?? lastNameParts.join(' '),
             email: m.email,
             phone: m.phone ?? '',
             gender: m.gender ?? '',
@@ -205,7 +206,7 @@ export class MemberFormComponent implements OnInit {
             emergencyRelationship: m.emergencyContact?.relationship ?? '',
             notes: m.notes ?? '',
           });
-          if (m.profilePhoto) this.photoPreview.set(m.profilePhoto);
+          if (m.profilePhoto ?? m.photo) this.photoPreview.set(m.profilePhoto ?? m.photo ?? null);
         },
       });
     }
@@ -227,8 +228,7 @@ export class MemberFormComponent implements OnInit {
 
     const v = this.form.value;
     const formData = new FormData();
-    formData.append('firstName', v.firstName!);
-    formData.append('lastName', v.lastName!);
+    formData.append('fullName', `${v.firstName} ${v.lastName}`.trim());
     formData.append('email', v.email!);
     if (v.phone) formData.append('phone', v.phone);
     if (v.gender) formData.append('gender', v.gender);
@@ -244,7 +244,7 @@ export class MemberFormComponent implements OnInit {
         relationship: v.emergencyRelationship,
       }));
     }
-    if (this.selectedFile) formData.append('profilePhoto', this.selectedFile);
+    if (this.selectedFile) formData.append('photo', this.selectedFile);
 
     const obs = this.isEdit()
       ? this.membersService.update(this.memberId, formData)

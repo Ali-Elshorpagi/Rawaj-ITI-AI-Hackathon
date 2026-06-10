@@ -15,7 +15,12 @@ interface DayColumn {
   date: Date;
   label: string;
   dayShort: string;
-  classes: GymClass[];
+  classes: ScheduleEvent[];
+}
+
+interface ScheduleEvent extends GymClass {
+  occurrenceStart: Date;
+  occurrenceEnd: Date;
 }
 
 @Component({
@@ -49,12 +54,12 @@ interface DayColumn {
                 <span class="day-num" [class.today-circle]="isToday(day.date)">{{ day.date | date:'d' }}</span>
               </div>
               <div class="schedule-day__classes">
-                @for (cls of day.classes; track cls.id) {
+                @for (cls of day.classes; track (cls.id ?? cls._id) + '-' + cls.occurrenceStart.toISOString()) {
                   <div class="schedule-event" [style.background]="getEventColor(cls)">
-                    <div class="event-title">{{ cls.title }}</div>
-                    <div class="event-meta">{{ cls.startTime | date:'shortTime' }}</div>
-                    <div class="event-meta">{{ cls.trainer?.firstName }} {{ cls.trainer?.lastName }}</div>
-                    <div class="event-meta">{{ cls.participants?.length ?? 0 }}/{{ cls.capacity }}</div>
+                    <div class="event-title">{{ cls.name }}</div>
+                    <div class="event-meta">{{ cls.occurrenceStart | date:'shortTime' }} - {{ cls.occurrenceEnd | date:'shortTime' }}</div>
+                    <div class="event-meta">{{ trainerName(cls.trainerId) }}</div>
+                    <div class="event-meta">{{ cls.enrollmentCount ?? cls.participants?.length ?? 0 }}/{{ cls.capacity }}</div>
                   </div>
                 } @empty {
                   <div class="no-classes">—</div>
@@ -114,22 +119,18 @@ export class ClassScheduleComponent implements OnInit {
       `${this.weekStart.toLocaleDateString('en', { month: 'short', day: 'numeric' })} – ${end.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}`
     );
 
-    this.api.get<any>('/classes/schedule', {
-      startDate: this.weekStart.toISOString(),
-      endDate: end.toISOString(),
-    }).subscribe({
+    this.api.get<any>('/classes').subscribe({
       next: (res) => {
         const classes: GymClass[] = res.data ?? [];
         const columns: DayColumn[] = [];
         for (let i = 0; i < 7; i++) {
           const date = new Date(this.weekStart);
           date.setDate(date.getDate() + i);
-          const dayStr = date.toDateString();
           columns.push({
             date,
             label: date.toLocaleDateString('en', { weekday: 'long' }),
             dayShort: date.toLocaleDateString('en', { weekday: 'short' }),
-            classes: classes.filter(c => c.startTime ? new Date(c.startTime).toDateString() === dayStr : false),
+            classes: this.eventsForDate(classes, date).sort((a, b) => a.occurrenceStart.getTime() - b.occurrenceStart.getTime()),
           });
         }
         this.days.set(columns);
@@ -157,9 +158,33 @@ export class ClassScheduleComponent implements OnInit {
   goToToday(): void { this.weekStart = this.getMonday(new Date()); this.loadWeek(); }
   isToday(date: Date): boolean { return date.toDateString() === new Date().toDateString(); }
 
+  private eventsForDate(classes: GymClass[], date: Date): ScheduleEvent[] {
+    return classes.flatMap(cls =>
+      (cls.schedule ?? [])
+        .filter(slot => slot.dayOfWeek === date.getDay())
+        .map(slot => ({
+          ...cls,
+          occurrenceStart: this.combineDateAndTime(date, slot.startTime),
+          occurrenceEnd: this.combineDateAndTime(date, slot.endTime),
+        }))
+    );
+  }
+
+  private combineDateAndTime(date: Date, time: string): Date {
+    const [hours, minutes] = time.split(':').map(Number);
+    const result = new Date(date);
+    result.setHours(hours || 0, minutes || 0, 0, 0);
+    return result;
+  }
+
+  trainerName(trainer: GymClass['trainerId']): string {
+    if (!trainer || typeof trainer === 'string') return 'Trainer TBD';
+    return trainer.fullName ?? ([trainer.firstName, trainer.lastName].filter(Boolean).join(' ') || 'Trainer TBD');
+  }
+
   getEventColor(cls: GymClass): string {
     const colors = ['#EEF1F8', '#F0FDF4', '#FEF3C7', '#FDF2F8', '#E0F2FE'];
-    const idx = (cls.title ?? cls.name).charCodeAt(0) % colors.length;
+    const idx = cls.name.charCodeAt(0) % colors.length;
     return colors[idx];
   }
 }

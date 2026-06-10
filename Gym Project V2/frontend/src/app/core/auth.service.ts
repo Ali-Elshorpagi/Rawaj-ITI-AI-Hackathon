@@ -64,9 +64,9 @@ export class AuthService {
     };
   }
 
-  // POST /api/auth/login  — role defaults to 'member' if not supplied
-  login(email: string, password: string, role: string = 'member'): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/login`, { email, password, role }).pipe(
+  // POST /api/auth/login  — omits role so backend auto-detects from user.roles[0]
+  login(email: string, password: string): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(res => {
         if (res.data?.token) {
           const rawToken = (res.data.token as string).replace(/^Bearer\s+/i, '');

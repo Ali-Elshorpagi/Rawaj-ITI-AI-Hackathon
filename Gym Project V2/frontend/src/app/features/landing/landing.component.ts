@@ -27,8 +27,8 @@ interface Stat {
   imports: [CommonModule, RouterLink, TranslateModule],
   template: `
     <!-- ── NAV ──────────────────────────────────────────────────────────────── -->
-    <nav class="fixed top-0 inset-x-0 z-50 transition-all duration-300"
-         [ngClass]="scrolled() ? 'bg-gym-dark/95 backdrop-blur-md border-b border-white/10' : ''">
+    <nav class="fixed top-0 inset-x-0 z-50 transition-all duration-300
+         bg-gym-dark/95 backdrop-blur-md border-b border-white/10">
       <div class="max-w-7xl mx-auto px-5 lg:px-8 h-16 flex items-center justify-between">
 
         <!-- Logo -->
@@ -152,7 +152,7 @@ interface Stat {
           <span class="text-gym-green italic">{{ 'landing.hero.title2' | translate }}</span>
         </h1>
 
-        <p class="text-gray-300 text-base md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+        <p  class="text-white text-base md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-light">
           {{ 'landing.hero.subtitle' | translate }}
         </p>
 
@@ -167,21 +167,7 @@ interface Stat {
           </a>
         </div>
 
-        <!-- Trust indicators -->
-        <div class="flex items-center justify-center gap-8 mt-14 flex-wrap">
-          <div class="flex items-center gap-2 text-gray-500 text-xs">
-            <i class="fa-solid fa-shield-halved text-gym-green text-sm"></i>
-            <span>No contracts</span>
-          </div>
-          <div class="flex items-center gap-2 text-gray-500 text-xs">
-            <i class="fa-solid fa-clock text-gym-green text-sm"></i>
-            <span>24/7 Access</span>
-          </div>
-          <div class="flex items-center gap-2 text-gray-500 text-xs">
-            <i class="fa-solid fa-star text-gym-green text-sm"></i>
-            <span>5-star rated</span>
-          </div>
-        </div>
+
       </div>
 
       <div class="absolute bottom-8 start-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-gray-600 animate-bounce">

@@ -1,12 +1,12 @@
 import { z } from "zod";
+import mongoose from "mongoose";
 import Attendance from "./attendance.model";
 import Member from "../members/member.model";
-import { mongoIdSchema } from "../../shared/utils/custom-checckers";
 import { ForbiddenError, NotFoundError } from "../../shared/utils/custom-errors";
 
 const checkInSchema = z
   .object({
-    memberId: mongoIdSchema.optional(),
+    memberId: z.string().trim().optional(),
     qrToken: z.string().optional(),
     method: z.enum(["qr", "manual"]).default("qr"),
   })
@@ -23,14 +23,31 @@ export class AttendanceService {
     let member;
 
     if (parsed.qrToken) {
+      const safeQr = parsed.qrToken.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const qrPattern = parsed.qrToken.length < 36 ? `^${safeQr}` : `^${safeQr}$`;
       member = await Member.findOne({
-        qrCode: parsed.qrToken,
+        qrCode: { $regex: qrPattern, $options: "i" },
         isDeleted: false,
       });
     } else {
+      const identifier = parsed.memberId ?? "";
+      const identifierLower = identifier.toLowerCase();
+      const safeRegex = identifierLower.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      // Prefix match: short tokens (< 36 chars) match the beginning of the stored UUID
+      const qrPattern = identifier.length < 36
+        ? `^${safeRegex}`
+        : `^${safeRegex}$`;
+      const lookup: Record<string, unknown>[] = [
+        { qrCode: { $regex: qrPattern, $options: "i" } },
+        { email: identifierLower },
+        { phone: identifier },
+      ];
+      if (mongoose.isValidObjectId(identifier)) {
+        lookup.unshift({ _id: identifier });
+      }
       member = await Member.findOne({
-        _id: parsed.memberId,
         isDeleted: false,
+        $or: lookup,
       });
     }
 
@@ -189,6 +206,17 @@ export class AttendanceService {
    */
   async checkInByQR(qrData: string, staffId?: string) {
     return this.checkIn({ qrToken: qrData, method: "qr" }, staffId);
+  }
+
+  /**
+   * Staff check-out by attendance record ID.
+   */
+  async staffCheckOut(attendanceId: string) {
+    const record = await Attendance.findById(attendanceId);
+    if (!record) throw new NotFoundError("attendanceNotFound");
+    record.checkedOutAt = new Date();
+    await record.save();
+    return record;
   }
 
   /**

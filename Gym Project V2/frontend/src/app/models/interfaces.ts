@@ -111,7 +111,9 @@ export interface Attendance {
   memberId: string | Member;
   member?: Member;
   checkedInAt: string;
+  checkedOutAt?: string | null;
   checkInTime?: string;
+  checkOutTime?: string | null;
   method: AttendanceMethod;
   staffId?: string;
   createdAt?: string;

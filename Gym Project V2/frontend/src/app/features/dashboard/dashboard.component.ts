@@ -11,14 +11,28 @@ import { DashboardService } from '../../services/dashboard.service';
 import { AuthService } from '../../core/auth.service';
 import { UserRole } from '../../models/enums';
 import { MemberDashboardComponent } from './member-dashboard/member-dashboard.component';
+import { ReceptionDashboardComponent } from './reception-dashboard/reception-dashboard.component';
+import { TrainerDashboardComponent } from './trainer-dashboard/trainer-dashboard.component';
+import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
+import { OwnerDashboardComponent } from './owner-dashboard/owner-dashboard.component';
 
 @Component({
   selector: 'gd-dashboard',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule, TranslateModule, RouterLink, BaseChartDirective, MemberDashboardComponent],
+  imports: [CommonModule, MatButtonModule, MatCardModule, TranslateModule, RouterLink, BaseChartDirective,
+            MemberDashboardComponent, ReceptionDashboardComponent,
+            TrainerDashboardComponent, ManagerDashboardComponent, OwnerDashboardComponent],
   template: `
     @if (auth.isMember()) {
       <gd-member-dashboard />
+    } @else if (auth.isReception()) {
+      <gd-reception-dashboard />
+    } @else if (auth.isTrainer()) {
+      <gd-trainer-dashboard />
+    } @else if (auth.isManager()) {
+      <gd-manager-dashboard />
+    } @else if (auth.isOwner()) {
+      <gd-owner-dashboard />
     } @else {
     <div class="page">
       <div class="gd-page-header">
@@ -149,13 +163,14 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     const role = this.auth.currentUser()?.role;
     // Member dashboard is handled by the child MemberDashboardComponent
-    if (role === UserRole.MEMBER) { this.loading.set(false); return; }
+    // Dedicated child components handle their own data fetching
+    const selfManaged: (UserRole | undefined)[] = [
+      UserRole.MEMBER, UserRole.RECEPTION, UserRole.TRAINER, UserRole.MANAGER, UserRole.OWNER,
+    ];
+    if (selfManaged.includes(role as UserRole)) { this.loading.set(false); return; }
 
     let dashboardObs;
     switch (role) {
-      case UserRole.OWNER: dashboardObs = this.dashboardService.getOwnerDashboard(); break;
-      case UserRole.MANAGER: dashboardObs = this.dashboardService.getManagerDashboard(); break;
-      case UserRole.TRAINER: dashboardObs = this.dashboardService.getTrainerDashboard(); break;
       default: dashboardObs = this.dashboardService.getOwnerDashboard();
     }
 

@@ -99,6 +99,15 @@ export class AttendanceController {
     }
   }
 
+  async staffCheckOut(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.attendanceService.staffCheckOut(req.params.id);
+      res.sendSuccess("Checked out successfully", result, 200);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async selfCheckOut(req: Request, res: Response, next: NextFunction) {
     try {
       const memberId = req.user?.memberId;

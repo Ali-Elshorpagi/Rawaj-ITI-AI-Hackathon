@@ -17,6 +17,7 @@ export class DashboardRouter {
 
     router.get("/owner", auth, requireRole(["owner"]), this.dashboardController.owner.bind(this.dashboardController));
     router.get("/manager", auth, requireRole(["manager", "owner"]), this.dashboardController.manager.bind(this.dashboardController));
+    router.get("/reception", auth, requireRole(["reception", "manager", "owner"]), this.dashboardController.reception.bind(this.dashboardController));
     router.get("/trainer", auth, requireRole(["trainer", "manager", "owner"]), this.dashboardController.trainer.bind(this.dashboardController));
     router.get("/member", auth, requireRole(["member", "reception", "manager", "owner"]), this.dashboardController.member.bind(this.dashboardController));
 

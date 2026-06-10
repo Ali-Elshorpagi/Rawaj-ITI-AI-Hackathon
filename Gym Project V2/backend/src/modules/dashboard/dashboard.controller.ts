@@ -22,6 +22,15 @@ export class DashboardController {
     }
   }
 
+  async reception(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.dashboardService.getReceptionDashboard();
+      res.sendSuccess("Reception dashboard fetched", result, 200);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async trainer(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await this.dashboardService.getTrainerDashboard(req.user.id);

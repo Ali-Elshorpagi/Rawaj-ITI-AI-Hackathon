@@ -8,12 +8,12 @@ export const inputSchema = z.object({
     message: "user_password_missing",
   }),
   role: z
-    .any()
-    .refine((value) => value, { message: "user_role_missing" })
+    .string()
     .refine(
-      (value) => typeof value === "string" && GYM_ROLES.includes(value as any),
+      (value) => GYM_ROLES.includes(value as any),
       { message: "user_role_invalid" }
-    ),
+    )
+    .optional(),
 });
 
 export type Input = z.infer<typeof inputSchema>;

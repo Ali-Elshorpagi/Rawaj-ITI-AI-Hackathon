@@ -6,6 +6,7 @@ import paginationMiddleware from "../../shared/middlewares/pagination";
 
 const CHECKIN_ROLES = requireRole(["member", "reception", "manager", "owner"]);
 const VIEW_ROLES = requireRole(["member", "reception", "manager", "owner"]);
+const STAFF_ROLES = requireRole(["reception", "manager", "owner"]);
 const MEMBER_ONLY = requireRole(["member"]);
 
 export class AttendanceRouter {
@@ -20,6 +21,12 @@ export class AttendanceRouter {
     const router = Router();
     const auth = this.gymAuth.authenticate.bind(this.gymAuth);
 
+    router.patch(
+      "/:id/checkout",
+      auth,
+      STAFF_ROLES,
+      this.attendanceController.staffCheckOut.bind(this.attendanceController)
+    );
     router.post(
       "/self-checkin",
       auth,

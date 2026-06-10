@@ -37,7 +37,13 @@ interface NavItem {
       <div class="fixed inset-0 bg-black/60 z-40 md:hidden" (click)="closeMobileSidebar()"></div>
     }
 
-    <div class="layout" [class.layout--collapsed]="sidebarCollapsed()" [class.layout--mobile-open]="mobileSidebarOpen()">
+    <div class="layout"
+         [class.layout--collapsed]="sidebarCollapsed()"
+         [class.layout--mobile-open]="mobileSidebarOpen()"
+         [class.reception-theme]="authService.isReception()"
+         [class.trainer-theme]="authService.isTrainer()"
+         [class.manager-theme]="authService.isManager()"
+         [class.owner-theme]="authService.isOwner()">
       <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar__header">
@@ -81,6 +87,10 @@ interface NavItem {
               <span class="sidebar__user-role">{{ authService.currentUser()?.role }}</span>
             </div>
           </div>
+          <button class="sidebar__logout" (click)="logout()" matTooltip="Logout" matTooltipPosition="after">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="sidebar__logout-label">Logout</span>
+          </button>
         </div>
       </aside>
 
@@ -243,6 +253,125 @@ interface NavItem {
 
     .content { flex: 1; padding: 24px; background: var(--surface-bg); }
 
+    .sidebar__logout {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; padding: 8px 10px; margin-top: 6px;
+      border: none; background: transparent; cursor: pointer; border-radius: var(--radius-md);
+      color: var(--text-muted); font-size: .875rem; transition: all var(--transition-fast);
+      &:hover { background: var(--surface-hover); color: var(--color-error, #ef4444); }
+    }
+    .sidebar__logout-label { .layout--collapsed & { opacity: 0; width: 0; overflow: hidden; } transition: opacity var(--transition-base), width var(--transition-base); }
+
+    /* ── Reception blue theme ─────────────────────────────── */
+    .reception-theme {
+      .sidebar {
+        background: #1e3a8a;
+        border-color: #1e40af;
+      }
+      .sidebar__header, .sidebar__footer { border-color: #1d4ed8; }
+      .sidebar__logo { background: #2563eb; }
+      .sidebar__name, .sidebar__user-name { color: #fff; }
+      .sidebar__user-role { color: #93c5fd; }
+      .sidebar__toggle { color: #93c5fd; }
+      .sidebar__toggle:hover { color: #fff; }
+      .nav-item { color: #93c5fd; }
+      .nav-item:hover { background: rgba(255,255,255,.1); color: #fff; }
+      .nav-item--active {
+        background: rgba(255,255,255,.18) !important;
+        color: #fff !important;
+        .nav-item__icon { color: #fff; }
+      }
+      .nav-item__badge { background: #f97316; }
+      .sidebar__logout { color: #93c5fd; }
+      .sidebar__logout:hover { background: rgba(255,255,255,.1); color: #fca5a5; }
+      .header {
+        background: #1e40af;
+        border-color: #2563eb;
+      }
+      .header button, .header a { color: #e0f2fe; }
+      .header button:hover, .header a:hover { color: #fff; background: rgba(255,255,255,.12); border-radius: 8px; }
+      .gd-avatar { background: #2563eb; color: #fff; border: 2px solid #60a5fa; }
+      .content { background: #eff6ff; }
+    }
+
+    /* ── Trainer emerald theme ────────────────────────────── */
+    .trainer-theme {
+      .sidebar { background: #064e3b; border-color: #065f46; }
+      .sidebar__header, .sidebar__footer { border-color: #065f46; }
+      .sidebar__logo { background: #059669; }
+      .sidebar__name, .sidebar__user-name { color: #fff; }
+      .sidebar__user-role { color: #6ee7b7; }
+      .sidebar__toggle { color: #6ee7b7; }
+      .sidebar__toggle:hover { color: #fff; }
+      .nav-item { color: #6ee7b7; }
+      .nav-item:hover { background: rgba(255,255,255,.1); color: #fff; }
+      .nav-item--active {
+        background: rgba(255,255,255,.18) !important;
+        color: #fff !important;
+        .nav-item__icon { color: #fff; }
+      }
+      .nav-item__badge { background: #f97316; }
+      .sidebar__logout { color: #6ee7b7; }
+      .sidebar__logout:hover { background: rgba(255,255,255,.1); color: #fca5a5; }
+      .header { background: #065f46; border-color: #059669; }
+      .header button, .header a { color: #d1fae5; }
+      .header button:hover, .header a:hover { color: #fff; background: rgba(255,255,255,.12); border-radius: 8px; }
+      .gd-avatar { background: #059669; color: #fff; border: 2px solid #34d399; }
+      .content { background: #f0fdf4; }
+    }
+
+    /* ── Manager violet theme ─────────────────────────────── */
+    .manager-theme {
+      .sidebar { background: #2e1065; border-color: #4c1d95; }
+      .sidebar__header, .sidebar__footer { border-color: #4c1d95; }
+      .sidebar__logo { background: #7c3aed; }
+      .sidebar__name, .sidebar__user-name { color: #fff; }
+      .sidebar__user-role { color: #c4b5fd; }
+      .sidebar__toggle { color: #c4b5fd; }
+      .sidebar__toggle:hover { color: #fff; }
+      .nav-item { color: #c4b5fd; }
+      .nav-item:hover { background: rgba(255,255,255,.1); color: #fff; }
+      .nav-item--active {
+        background: rgba(255,255,255,.18) !important;
+        color: #fff !important;
+        .nav-item__icon { color: #fff; }
+      }
+      .nav-item__badge { background: #f97316; }
+      .sidebar__logout { color: #c4b5fd; }
+      .sidebar__logout:hover { background: rgba(255,255,255,.1); color: #fca5a5; }
+      .header { background: #4c1d95; border-color: #7c3aed; }
+      .header button, .header a { color: #ede9fe; }
+      .header button:hover, .header a:hover { color: #fff; background: rgba(255,255,255,.12); border-radius: 8px; }
+      .gd-avatar { background: #7c3aed; color: #fff; border: 2px solid #a78bfa; }
+      .content { background: #f5f3ff; }
+    }
+
+    /* ── Owner amber theme ────────────────────────────────── */
+    .owner-theme {
+      .sidebar { background: #451a03; border-color: #78350f; }
+      .sidebar__header, .sidebar__footer { border-color: #78350f; }
+      .sidebar__logo { background: #d97706; }
+      .sidebar__name, .sidebar__user-name { color: #fff; }
+      .sidebar__user-role { color: #fcd34d; }
+      .sidebar__toggle { color: #fcd34d; }
+      .sidebar__toggle:hover { color: #fff; }
+      .nav-item { color: #fcd34d; }
+      .nav-item:hover { background: rgba(255,255,255,.1); color: #fff; }
+      .nav-item--active {
+        background: rgba(255,255,255,.18) !important;
+        color: #fff !important;
+        .nav-item__icon { color: #fff; }
+      }
+      .nav-item__badge { background: #ef4444; }
+      .sidebar__logout { color: #fcd34d; }
+      .sidebar__logout:hover { background: rgba(255,255,255,.1); color: #fca5a5; }
+      .header { background: #78350f; border-color: #d97706; }
+      .header button, .header a { color: #fef3c7; }
+      .header button:hover, .header a:hover { color: #fff; background: rgba(255,255,255,.12); border-radius: 8px; }
+      .gd-avatar { background: #d97706; color: #fff; border: 2px solid #fbbf24; }
+      .content { background: #fffbeb; }
+    }
+
     @media (max-width: 768px) {
       .sidebar {
         transform: translateX(-100%);
@@ -330,7 +459,9 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
   getInitials(): string {
     const user = this.authService.currentUser();
     if (!user) return '?';
-    return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+    const first = user.firstName?.[0] ?? '';
+    const last = user.lastName?.[0] ?? '';
+    return (first + last).toUpperCase() || '?';
   }
 
   logout(): void {

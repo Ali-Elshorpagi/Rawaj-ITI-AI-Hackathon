@@ -32,8 +32,8 @@ import { AuthService } from '../../../core/auth.service';
         <div class="gd-card member-header">
           <div class="member-header__left">
             <div class="gd-avatar gd-avatar--xl">
-              @if (member()!.profilePhoto) {
-                <img [src]="member()!.profilePhoto" [alt]="member()!.fullName">
+              @if (member()!.profilePhoto || member()!.photo) {
+                <img [src]="member()!.profilePhoto ?? member()!.photo" [alt]="member()!.fullName">
               } @else {
                 {{ getInitials(member()!) }}
               }
@@ -41,7 +41,14 @@ import { AuthService } from '../../../core/auth.service';
             <div>
               <h2 class="member-header__name">{{ member()!.fullName }}</h2>
               <p class="text-muted">{{ member()!.email }}</p>
-              <code>{{ member()!.memberId }}</code>
+              <p style="font-size:.75rem;color:var(--text-muted);margin:2px 0 0">
+                ID: <code style="font-size:.7rem;word-break:break-all">{{ member()!.id }}</code>
+              </p>
+              @if (member()!.qrCode) {
+                <p style="font-size:.75rem;color:var(--text-muted);margin:2px 0 0">
+                  QR Token: <code style="font-size:.7rem;word-break:break-all;user-select:all">{{ member()!.qrCode }}</code>
+                </p>
+              }
             </div>
           </div>
           <div class="member-header__right">
@@ -93,8 +100,8 @@ import { AuthService } from '../../../core/auth.service';
               @if (member()!.qrCode) {
                 <div class="gd-card qr-card">
                   <div class="gd-card__title">Member QR Code</div>
-                  <img [src]="member()!.qrCode" alt="QR Code" class="qr-image">
-                  <p class="text-muted">Scan to check in</p>
+                  <code>{{ member()!.qrCode }}</code>
+                  <p class="text-muted">Use this token or the generated member dashboard QR to check in</p>
                 </div>
               }
             </div>
@@ -108,11 +115,11 @@ import { AuthService } from '../../../core/auth.service';
                   <table class="gd-table">
                     <thead><tr><th>Date</th><th>Check-In</th><th>Check-Out</th><th>Method</th></tr></thead>
                     <tbody>
-                      @for (record of attendance(); track record.id) {
+                      @for (record of attendance(); track record.id ?? record._id) {
                         <tr>
-                          <td>{{ record.date | date:'mediumDate' }}</td>
-                          <td>{{ record.checkInTime | date:'shortTime' }}</td>
-                          <td>{{ record.checkOutTime ? (record.checkOutTime | date:'shortTime') : '—' }}</td>
+                          <td>{{ record.checkedInAt | date:'mediumDate' }}</td>
+                          <td>{{ record.checkedInAt | date:'shortTime' }}</td>
+                          <td>{{ record.checkedOutAt ? (record.checkedOutAt | date:'shortTime') : '-' }}</td>
                           <td><span class="badge badge--active">{{ record.method }}</span></td>
                         </tr>
                       } @empty {
@@ -136,10 +143,10 @@ import { AuthService } from '../../../core/auth.service';
                       @for (payment of payments(); track payment.id) {
                         <tr>
                           <td><code>{{ payment.invoiceNumber }}</code></td>
-                          <td>{{ payment.subscriptionPlan?.name ?? '—' }}</td>
+                          <td>{{ payment.subscriptionPlan?.name ?? '-' }}</td>
                           <td>{{ payment.amount | currency:payment.currency }}</td>
                           <td><span class="badge" [ngClass]="'badge--' + payment.status">{{ payment.status }}</span></td>
-                          <td>{{ payment.paymentDate | date:'mediumDate' }}</td>
+                          <td>{{ (payment.paymentDate || payment.paidAt || payment.createdAt) | date:'mediumDate' }}</td>
                         </tr>
                       } @empty {
                         <tr><td colspan="5" style="text-align:center;color:var(--text-muted)">No payments</td></tr>
@@ -194,7 +201,7 @@ import { AuthService } from '../../../core/auth.service';
                       [disabled]="!selectedPlanId() || checkoutLoading()"
                       (click)="initiateCheckout()">
                 <i [class]="checkoutLoading() ? 'fa-solid fa-rotate' : 'fa-solid fa-arrow-up-right-from-square'"></i>
-                {{ checkoutLoading() ? 'Redirecting to Stripe...' : 'Pay with Stripe' }}
+                {{ checkoutLoading() ? 'Recording...' : 'Record Cash Payment' }}
               </button>
             </div>
           }
@@ -301,21 +308,21 @@ export class MemberDetailComponent implements OnInit {
   }
 
   initiateCheckout(): void {
-    const memberId = this.member()?.id;
+    const memberId = this.member()?.id ?? this.member()?._id;
     const planId = this.selectedPlanId();
     if (!memberId || !planId) return;
 
     this.checkoutLoading.set(true);
-    this.paymentsService.createCheckout(planId).subscribe({
+    this.subscriptionsService.assignPlan(memberId, planId, 'cash').subscribe({
       next: (res) => {
         this.checkoutLoading.set(false);
         this.closePaymentDialog();
-        // Redirect to Stripe Checkout
-        window.location.href = res.data.sessionUrl;
+        this.toastr.success('Subscription assigned and payment record created', 'Payment Recorded');
+        this.ngOnInit();
       },
       error: (err) => {
         this.checkoutLoading.set(false);
-        this.toastr.error(err.error?.message ?? 'Failed to create checkout session', 'Payment Error');
+        this.toastr.error(err.error?.message ?? 'Failed to record payment', 'Payment Error');
       },
     });
   }
@@ -326,3 +333,4 @@ export class MemberDetailComponent implements OnInit {
     return `${first}${last}`.toUpperCase();
   }
 }
+

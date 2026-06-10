@@ -69,15 +69,15 @@ import { ModalService } from '../../../shared/modal/modal.service';
               @for (payment of payments(); track payment.id) {
                 <tr>
                   <td><code>{{ payment.invoiceNumber }}</code></td>
-                  <td>{{ $any(payment.member)?.firstName ?? '—' }} {{ $any(payment.member)?.lastName ?? '' }}</td>
-                  <td>{{ payment.subscriptionPlan?.name ?? '—' }}</td>
+                  <td>{{ memberName(payment.memberId) }}</td>
+                  <td>{{ payment.subscriptionPlan?.name ?? '-' }}</td>
                   <td>{{ payment.amount | currency:payment.currency }}</td>
                   <td>
                     <span class="badge" [ngClass]="'badge--' + payment.status">
                       {{ 'payments.status.' + payment.status | translate }}
                     </span>
                   </td>
-                  <td>{{ (payment.paymentDate || payment.createdAt) | date:'mediumDate' }}</td>
+                  <td>{{ (payment.paymentDate || payment.paidAt || payment.createdAt) | date:'mediumDate' }}</td>
                   <td *ngIf="auth.isAdmin()">
                     @if (payment.status === 'paid') {
                       <button mat-stroked-button color="warn" (click)="refund(payment)" style="font-size:0.75rem;height:32px">
@@ -137,11 +137,12 @@ export class PaymentListComponent implements OnInit {
   loadRevenueStats(): void {
     this.paymentsService.getRevenueStats().subscribe({
       next: (res) => {
-        const total = res.data.reduce((sum: number, m: any) => sum + m.revenue, 0);
-        const currentMonth = res.data.find((m: any) => m.month === new Date().getMonth() + 1)?.revenue ?? 0;
+        const total = res.data.reduce((sum: number, m: any) => sum + (m.revenue ?? m.total ?? 0), 0);
+        const currentMonth = res.data.find((m: any) => m.month === new Date().getMonth() + 1);
+        const currentMonthRevenue = currentMonth?.revenue ?? currentMonth?.total ?? 0;
         this.revenueStats.set([
           { icon: 'fa-solid fa-money-bill-wave', label: 'Total Revenue (YTD)', value: `$${total.toFixed(0)}`, bg: '#EEF1F8', color: '#3F5587' },
-          { icon: 'fa-solid fa-arrow-trend-up', label: 'This Month', value: `$${currentMonth.toFixed(0)}`, bg: '#F0FDF4', color: '#16A34A' },
+          { icon: 'fa-solid fa-arrow-trend-up', label: 'This Month', value: `$${currentMonthRevenue.toFixed(0)}`, bg: '#F0FDF4', color: '#16A34A' },
         ]);
       },
     });
@@ -150,6 +151,11 @@ export class PaymentListComponent implements OnInit {
   onPageChange(event: PageEvent): void {
     this.page = event.pageIndex + 1;
     this.loadPayments();
+  }
+
+  memberName(member: Payment['memberId']): string {
+    if (!member || typeof member === 'string') return 'Member';
+    return member.fullName ?? ([member.firstName, member.lastName].filter(Boolean).join(' ') || 'Member');
   }
 
   async refund(payment: Payment): Promise<void> {
@@ -167,3 +173,5 @@ export class PaymentListComponent implements OnInit {
     });
   }
 }
+
+

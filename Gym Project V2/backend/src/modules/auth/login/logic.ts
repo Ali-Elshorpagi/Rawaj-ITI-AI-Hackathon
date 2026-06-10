@@ -18,7 +18,7 @@ export class LoginLogic {
    */
   async login(data: Input, language = "en") {
     data = inputSchema.parse(data);
-    const { email, password, role } = data;
+    const { email, password, role: requestedRole } = data;
 
     const user = await User.findOne({
       $or: [{ email }, { phone: email }],
@@ -41,6 +41,8 @@ export class LoginLogic {
       await this.verifyLogic.resendOtp({ email: user.email });
       return { user: { ...userData, id: user._id } };
     }
+
+    const role = requestedRole ?? user.roles[0];
 
     if (!user.roles.includes(role)) {
       throw new UnauthorizedError("userNotAllowed");

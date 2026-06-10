@@ -13,6 +13,10 @@ export class DashboardService extends ApiService {
     return this.get<ApiResponse<any>>('/dashboard/manager');
   }
 
+  getReceptionDashboard(): Observable<ApiResponse<any>> {
+    return this.get<ApiResponse<any>>('/dashboard/reception');
+  }
+
   getTrainerDashboard(): Observable<ApiResponse<any>> {
     return this.get<ApiResponse<any>>('/dashboard/trainer');
   }
