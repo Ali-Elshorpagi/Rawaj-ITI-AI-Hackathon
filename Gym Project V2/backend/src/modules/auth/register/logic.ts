@@ -18,6 +18,27 @@ export class RegisterLogic {
 
     const existingUser = await User.findOne({ email: data.email });
     if (existingUser) {
+      // If already registered but not verified, resend OTP instead of hard error
+      if (!existingUser.isVerified) {
+        const otpCode = generateOtp();
+        const otpExpiry = new Date(Date.now() + 15 * 60 * 1000);
+        existingUser.otp = { code: otpCode, expiry: otpExpiry };
+        await existingUser.save();
+
+        let emailSent = true;
+        try {
+          await this.mailerService.sendOtpEmail(existingUser.email, otpCode);
+        } catch (emailError) {
+          console.error("Failed to send OTP email:", emailError);
+          emailSent = false;
+        }
+
+        const userData = existingUser.toObject() as unknown as Record<string, unknown>;
+        delete userData.password;
+        delete userData.__v;
+        delete userData.otp;
+        return { ...userData, id: existingUser._id, emailSent };
+      }
       throw new InvalidCredentialsError("emailInUse");
     }
 
@@ -45,13 +66,19 @@ export class RegisterLogic {
       otp: { code: otpCode, expiry: otpExpiry },
     });
 
-    await this.mailerService.sendOtpEmail(newUser.email, otpCode);
+    let emailSent = true;
+    try {
+      await this.mailerService.sendOtpEmail(newUser.email, otpCode);
+    } catch (emailError) {
+      console.error("Failed to send OTP email:", emailError);
+      emailSent = false;
+    }
 
     const userData = newUser.toObject() as unknown as Record<string, unknown>;
     delete userData.password;
     delete userData.__v;
     delete userData.otp;
 
-    return { ...userData, id: newUser._id };
+    return { ...userData, id: newUser._id, emailSent };
   }
 }

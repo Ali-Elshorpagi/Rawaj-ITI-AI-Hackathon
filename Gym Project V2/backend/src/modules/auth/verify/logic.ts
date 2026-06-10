@@ -59,7 +59,11 @@ export class VerifyLogic {
 
     await user.save();
 
-    await this.mailerService.sendWelcomeEmail(user.email, user.name);
+    try {
+      await this.mailerService.sendWelcomeEmail(user.email, user.name);
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError);
+    }
 
     const userData = user.toObject() as unknown as Record<string, unknown>;
     delete userData.password;
@@ -94,13 +98,19 @@ export class VerifyLogic {
     user.otp = { code: otpCode, expiry: otpExpiry };
     await user.save();
 
-    await this.mailerService.sendOtpEmail(user.email, otpCode);
+    let emailSent = true;
+    try {
+      await this.mailerService.sendOtpEmail(user.email, otpCode);
+    } catch (emailError) {
+      console.error("Failed to resend OTP email:", emailError);
+      emailSent = false;
+    }
 
     const userData = user.toObject() as unknown as Record<string, unknown>;
     delete userData.password;
     delete userData.__v;
     delete userData.otp;
 
-    return { ...userData, id: user._id };
+    return { ...userData, id: user._id, emailSent };
   }
 }

@@ -197,7 +197,7 @@ type Step = 'form' | 'otp' | 'done';
           @if (resendCountdown() > 0) {
             <p class="text-gray-600 text-sm">Resend in <span class="text-white font-semibold">{{ resendCountdown() }}s</span></p>
           } @else {
-            <button (click)="sendOtp()" [disabled]="loading()" class="text-sm text-[#22C55E] hover:text-[#16A34A] font-semibold transition-colors">
+            <button (click)="resendCode()" [disabled]="loading()" class="text-sm text-[#22C55E] hover:text-[#16A34A] font-semibold transition-colors">
               <i class="fa-solid fa-rotate-right me-1"></i> Resend code
             </button>
           }
@@ -264,16 +264,38 @@ export class RegisterComponent implements OnInit {
     this.loading.set(true);
     const { firstName, lastName, email, password, phone } = this.form.value;
     this.authService.sendRegisterOtp({ firstName: firstName!, lastName: lastName!, email: email!, password: password!, phone: phone ?? undefined }).subscribe({
-      next: () => {
+      next: (res) => {
         this.loading.set(false);
         this.step.set('otp');
         this.otpError.set('');
         this.startCountdown();
-        this.toastr.success('Verification code sent to your email!', 'Code Sent');
+        if (res.data?.emailSent === false) {
+          this.toastr.warning('Account created but email delivery failed. Use "Resend code" to try again.', 'Email Issue');
+        } else {
+          this.toastr.success('Verification code sent to your email!', 'Code Sent');
+        }
       },
       error: (err) => {
         this.loading.set(false);
         this.toastr.error(err.error?.message ?? 'Failed to send code. Please try again.', 'Error');
+      },
+    });
+  }
+
+  resendCode(): void {
+    const email = this.form.value.email;
+    if (!email || this.loading()) return;
+    this.loading.set(true);
+    this.authService.resendOtp(email).subscribe({
+      next: () => {
+        this.loading.set(false);
+        this.otpError.set('');
+        this.startCountdown();
+        this.toastr.success('New verification code sent!', 'Code Sent');
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.toastr.error(err.error?.message ?? 'Failed to resend code. Please try again.', 'Error');
       },
     });
   }

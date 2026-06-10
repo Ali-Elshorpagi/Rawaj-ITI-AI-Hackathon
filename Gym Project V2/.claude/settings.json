@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-Content \"d:\\\\Rawaj-ITI-AI-Hackathon\\\\Gym Project V2\\\\backend\\\\server-err.log\" -Tail 50)",
+      "Bash(Get-Content \"d:\\\\Rawaj-ITI-AI-Hackathon\\\\Gym Project V2\\\\backend\\\\server.log\" -Tail 50)",
+      "PowerShell(Test-Connection -ComputerName \"mail.neurofy.puiux.org\" -Count 1 -ErrorAction SilentlyContinue)",
+      "PowerShell(Resolve-DnsName \"mail.neurofy.puiux.org\" -ErrorAction SilentlyContinue)",
+      "PowerShell($result = Test-NetConnection -ComputerName \"mail.neurofy.puiux.org\" -Port 465 -InformationLevel Quiet -WarningAction SilentlyContinue; Write-Output \"Port 465 reachable: $result\")"
+    ]
+  }
+}
